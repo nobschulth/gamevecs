@@ -1,5 +1,4 @@
-
-use core::f32;
+use std::fmt;
 use std::ops::{Add, AddAssign, Sub, SubAssign, Mul, MulAssign, Div, DivAssign, Neg};
 
 
@@ -54,7 +53,7 @@ impl Vec3 {
         self.z = z;
     }
     
-    ///Returns the length (distance to (0|0|0) of this vector. 
+    ///Returns the length (distance to (0|0|0)) of this vector. 
     /// 
     /// # Examples
     /// ```rust
@@ -330,4 +329,9 @@ impl Neg for Vec3 {
     }
 }
 
+impl fmt::Display for Vec3 {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "({}, {}, {})", self.x, self.y, self.z)
+    }
+}
 

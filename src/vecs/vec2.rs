@@ -1,5 +1,4 @@
-
-use core::f32;
+use std::fmt;
 use std::ops::{Add, AddAssign, Sub, SubAssign, Mul, MulAssign, Div, DivAssign, Neg};
 
 
@@ -48,7 +47,7 @@ impl Vec2 {
         self.y = y;
     }
 
-    ///Returns the length (distance to (0|0) of this vector.
+    ///Returns the length (distance to (0|0)) of this vector.
     /// 
     /// # Examples
     /// ```rust
@@ -102,7 +101,7 @@ impl Vec2 {
     /// let vec1 = Vec2::new(5.0, 0.0);
     /// 
     /// //normalize
-    /// let normalized = vec1.normalize();
+    /// let normalized = vec1.normalized();
     /// 
     /// assert_eq!(Vec2::new(1.0, 0.0), normalized);
     /// ```
@@ -336,4 +335,8 @@ impl Neg for Vec2 {
     }
 }
 
-
+impl fmt::Display for Vec2 {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "({}, {})", self.x, self.y)
+    }
+}
