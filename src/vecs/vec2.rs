@@ -48,7 +48,7 @@ impl Vec2 {
         self.y = y;
     }
 
-    ///Returns the length of this vector.
+    ///Returns the length (distance to (0|0) of this vector.
     /// 
     /// # Examples
     /// ```rust
@@ -99,14 +99,14 @@ impl Vec2 {
     /// # Examples
     /// ```rust
     /// use gamevecs::Vec2;
-    /// let vec1 = Vec2::new(7.0, 8.0);
-    /// let vec2 = Vec2::new(4.0, 4.0);
-    /// //get the distance
-    /// let distance = vec1.distance_to(vec2);
+    /// let vec1 = Vec2::new(5.0, 0.0);
     /// 
-    /// assert_eq!(5.0, distance);
+    /// //normalize
+    /// let normalized = vec1.normalize();
+    /// 
+    /// assert_eq!(Vec2::new(1.0, 0.0), normalized);
     /// ```
-    pub fn normalize(&self) -> Vec2 {
+    pub fn normalized(&self) -> Vec2 {
         let magnitude = self.magnitude();
         *self / Vec2::new(magnitude, magnitude)
     }
@@ -124,10 +124,7 @@ impl Vec2 {
     /// assert_eq!(5.0, distance);
     /// ```
     pub fn distance_to(&self, other: Vec2) -> f32 {
-        let lx = other.x - self.x;
-        let ly = other.y - self.y;
-
-        (lx.powi(2) + ly.powi(2)).sqrt()
+        self.distance_to_squared(other).sqrt()
     } 
 
     ///Returns the squared distance from this vector to another.
@@ -193,7 +190,7 @@ impl Vec2 {
 
     }
     
-    ///Returns the linear interpolation by t between this and another vector. T should be between 0 and 1.
+    ///Returns the linear interpolation by t between this and another vector.
     /// 
     /// # Examples
     /// ```rust
@@ -220,17 +217,18 @@ impl Vec2 {
     /// let vec1 = Vec2::new(3.0, 4.0);
     /// 
     /// //add length
-    /// let new_vec = vec1.add_length(53.13f32.to_radians(), 5.0);
+    /// let new_vec = vec1.add_length_by_angle(53.13f32.to_radians(), 5.0);
     /// 
     /// //using the approximate equals function due to floating point inaccuracity
     /// assert!(new_vec.equals(Vec2::new(6.0, 8.0), 1e-4));
     /// ```
-    pub fn add_length(&self, angle: f32, length: f32) -> Vec2 {
+    pub fn add_length_by_angle(&self, angle: f32, length: f32) -> Vec2 {
         Vec2 {
             x: self.x + angle.cos() * length,
             y: self.y + angle.sin() * length,
         }
     }
+
 
     ///Projects a vector onto another and returns the result as a new Vec2.
     /// 
@@ -246,7 +244,7 @@ impl Vec2 {
     /// assert_eq!(Vec2::new(3.0, 0.0), projection);
     /// ```
     pub fn project(&self, onto: Vec2) -> Vec2 {
-        let onto_normalized = onto.normalize();
+        let onto_normalized = onto.normalized();
         let scalar = self.dot(onto_normalized);
         Vec2 { x: onto_normalized.x * scalar, y: onto_normalized.y * scalar }
     }
